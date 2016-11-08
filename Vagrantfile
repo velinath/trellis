@@ -87,29 +87,23 @@ Vagrant.configure('2') do |config|
     end
   end
 
-  if Vagrant::Util::Platform.windows?
-    config.vm.provision :shell do |sh|
-      sh.path = File.join(ANSIBLE_PATH, 'windows.sh')
-      sh.args = [Vagrant::VERSION]
-      sh.keep_color = true
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.galaxy_roles_path = 'vendor/roles'
+    ansible.galaxy_role_file = 'requirements.yml'
+    ansible.playbook = 'dev.yml'
+    ansible.groups = {
+      'web' => ['default'],
+      'development' => ['default']
+    }
+
+    if tags = ENV['ANSIBLE_TAGS']
+      ansible.tags = tags
     end
-  else
-    config.vm.provision :ansible do |ansible|
-      ansible.playbook = File.join(ANSIBLE_PATH, 'dev.yml')
-      ansible.groups = {
-        'web' => ['default'],
-        'development' => ['default']
-      }
 
-      if tags = ENV['ANSIBLE_TAGS']
-        ansible.tags = tags
-      end
-
-      ansible.extra_vars = {'vagrant_version' => Vagrant::VERSION}
-      if vars = ENV['ANSIBLE_VARS']
-        extra_vars = Hash[vars.split(',').map { |pair| pair.split('=') }]
-        ansible.extra_vars.merge(extra_vars)
-      end
+    ansible.extra_vars = {'vagrant_version' => Vagrant::VERSION}
+    if vars = ENV['ANSIBLE_VARS']
+      extra_vars = Hash[vars.split(',').map { |pair| pair.split('=') }]
+      ansible.extra_vars.merge(extra_vars)
     end
   end
 
