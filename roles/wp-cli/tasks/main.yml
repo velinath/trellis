@@ -1,20 +1,20 @@
 ---
-- name: Install WP-CLI
+- name: Install Magerun
   get_url:
-    url: "{{ wp_cli_phar_url }}"
-    dest: "{{ wp_cli_bin_path }}"
+    url: "{{ magerun_phar_url }}"
+    dest: "{{ magerun_bin_path }}"
     force: true
     mode: 0755
 
-- name: Retrieve WP-CLI tab completions
-  command: curl -4Ls {{ wp_cli_completion_url }} -o /tmp/wp-completion-{{ wp_cli_version }}.bash
+- name: Retrieve Magerun tab completions
+  command: curl -4Ls {{ magerun_completion_url }} -o /tmp/magerun-completion-{{ magerun_version }}.bash
   args:
-    creates: /tmp/wp-completion-{{ wp_cli_version }}.bash
+    creates: /tmp/magerun-completion-{{ magerun_version }}.bash
     warn: false
 
-- name: Install WP-CLI tab completions
-  command: rsync -c --chmod=0644 --info=name /tmp/wp-completion-{{ wp_cli_version }}.bash {{ wp_cli_completion_path }}
+- name: Install Magerun tab completions
+  command: rsync -c --chmod=0644 --info=name /tmp/magerun-completion-{{ magerun_version }}.bash {{ magerun_completion_path }}
   args:
     warn: false
-  register: wp_cli_completion
-  changed_when: wp_cli_completion.stdout == "wp-completion-{{ wp_cli_version }}.bash"
+  register: magerun_completion
+  changed_when: magerun_completion.stdout == "magerun-completion-{{ magerun_version }}.bash"
