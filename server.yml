@@ -17,7 +17,7 @@
     - name: Install Python 2.x
       raw: sudo apt-get install -qq -y python-simplejson
 
-- name: WordPress Server - Install LEMP Stack with PHP 7.0 and MariaDB MySQL
+- name: Magento Server - Install LEMP Stack with PHP 7.0 and MariaDB MySQL
   hosts: web:&{{ env }}
   become: yes
   roles:
@@ -35,6 +35,6 @@
     - { role: nginx, tags: [nginx] }
     - { role: logrotate, tags: [logrotate] }
     - { role: composer, tags: [composer] }
-    - { role: wp-cli, tags: [wp-cli] }
+    - { role: magerun, tags: [magerun] }
     - { role: letsencrypt, tags: [letsencrypt], when: letsencrypt_enabled }
-    - { role: wordpress-setup, tags: [wordpress, wordpress-setup, letsencrypt] }
+    - { role: magento-setup, tags: [magento, magento-setup, letsencrypt] }
