@@ -4,7 +4,7 @@
     src: "{{ item.value.ssl.cert }}"
     dest: "{{ nginx_ssl_path }}/{{ item.value.ssl.cert | basename }}"
     mode: 0640
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   when: item.value.ssl.enabled and item.value.ssl.cert is defined
 
 - name: Copy SSL key
@@ -12,7 +12,7 @@
     src: "{{ item.value.ssl.key }}"
     dest: "{{ nginx_ssl_path }}/{{ item.value.ssl.key | basename }}"
     mode: 0600
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   when: item.value.ssl.enabled and item.value.ssl.key is defined
 
 - name: Create includes.d directories
@@ -20,7 +20,7 @@
     path: "{{ nginx_path }}/includes.d/{{ item }}"
     state: directory
     mode: 0755
-  with_items: "{{ wordpress_sites.keys() }}"
+  with_items: "{{ magento_sites.keys() }}"
   register: nginx_includes_paths
 
 - name: Template files out to includes.d
