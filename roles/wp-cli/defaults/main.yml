@@ -1,5 +1,5 @@
-wp_cli_version: 0.25.0
-wp_cli_bin_path: /usr/bin/wp
-wp_cli_phar_url: "https://github.com/wp-cli/wp-cli/releases/download/v{{ wp_cli_version }}/wp-cli-{{ wp_cli_version }}.phar"
-wp_cli_completion_url: "https://raw.githubusercontent.com/wp-cli/wp-cli/v{{ wp_cli_version }}/utils/wp-completion.bash"
-wp_cli_completion_path: /etc/bash_completion.d/wp-completion.bash
+magerun_version: 1.97.22
+magerun_bin_path: /usr/bin/magerun
+magerun_phar_url: "https://github.com/netz98/n98-magerun/releases/download/v{{ wp_cli_version }}/n98-magerun.phar"
+magerun_completion_url: "https://raw.githubusercontent.com/netz98/n98-magerun/v{{ wp_cli_version }}/autocompletion/bash/bash_complete"
+magerun_completion_path: /etc/bash_completion.d/magerun-completion.bash
