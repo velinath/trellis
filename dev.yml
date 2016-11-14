@@ -18,6 +18,6 @@
     - { role: nginx, tags: [nginx] }
     - { role: logrotate, tags: [logrotate] }
     - { role: composer, tags: [composer] }
-    - { role: wp-cli, tags: [wp-cli] }
-    - { role: wordpress-setup, tags: [wordpress, wordpress-setup] }
-    - { role: wordpress-install, tags: [wordpress, wordpress-install] }
+    - { role: magerun, tags: [magerun] }
+    - { role: magento-setup, tags: [magento, magento-setup] }
+    - { role: magento-install, tags: [magento, magento-install] }
