@@ -53,19 +53,19 @@
     dest: "{{ nginx_path }}/acme-challenge-location.conf"
   notify: reload nginx
 
-- name: Create WordPress configuration for Nginx
+- name: Create Magento configuration for Nginx
   template:
-    src: "wordpress-site.conf.j2"
+    src: "magento-site.conf.j2"
     dest: "{{ nginx_path }}/sites-available/{{ item.key }}.conf"
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   notify: reload nginx
 
-- name: Enable WordPress site
+- name: Enable Magento site
   file:
     src: "{{ nginx_path }}/sites-available/{{ item.key }}.conf"
     dest: "{{ nginx_path }}/sites-enabled/{{ item.key }}.conf"
     owner: root
     group: root
     state: link
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   notify: reload nginx
