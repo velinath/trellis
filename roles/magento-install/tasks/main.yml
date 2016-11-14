@@ -1,6 +1,6 @@
 ---
 - include: directories.yml
-  tags: wordpress-install-directories
+  tags: magento-install-directories
 
 - name: Create .env file
   template:
@@ -8,11 +8,11 @@
     dest: "/tmp/{{ item.key }}.env"
     owner: "{{ web_user }}"
     group: "{{ web_group }}"
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
 
 - name: Copy .env file into web root
   command: rsync -ac --info=NAME /tmp/{{ item.key }}.env {{ www_root }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/.env
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   register: env_file
   changed_when: env_file.stdout == "{{ item.key }}.env"
 
@@ -21,10 +21,10 @@
   args:
     chdir: "{{ www_root }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/"
   register: composer_results
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   changed_when: "'Nothing to install or update' not in composer_results.stderr"
 
-- name: Install WP
+- name: Install Magento
   command: wp core {{ item.value.multisite.enabled | default(false) | ternary('multisite-install', 'install') }}
            --allow-root
            --url="{{ site_env.wp_home }}"
@@ -34,11 +34,11 @@
            {% endif %}
            --title="{{ item.value.site_title | default(item.key) }}"
            --admin_user="{{ item.value.admin_user | default('admin') }}"
-           --admin_password="{{ vault_wordpress_sites[item.key].admin_password }}"
+           --admin_password="{{ vault_magento_sites[item.key].admin_password }}"
            --admin_email="{{ item.value.admin_email }}"
   args:
     chdir: "{{ www_root }}/{{ item.key }}/{{ item.value.current_path | default('current') }}/"
   register: wp_install
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ magento_sites }}"
   when: item.value.site_install | default(true)
-  changed_when: "'WordPress is already installed.' not in wp_install.stdout and 'The network already exists.' not in wp_install.stdout"
+  changed_when: "'Magento is already installed.' not in wp_install.stdout and 'The network already exists.' not in wp_install.stdout"
